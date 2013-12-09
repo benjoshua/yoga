@@ -1,0 +1,18 @@
+{% extends 'lessons/base.html' %}
+
+{% block content %}
+{% if lessons %}
+	<table border="1">	
+	{% for lesson in lessons %}
+		<tr>
+			<td> {{ lesson.name }} </td>
+			<td> {{ lesson.date }} </td>
+		</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<p>No lessons are available.</p>
+{% endif %}
+
+
+{% endblock %}
