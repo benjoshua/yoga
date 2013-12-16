@@ -1,18 +1,6 @@
-{% extends 'lessons/base.html' %}
+{% extends 'lessons/index.html' %}
 
-{% block content %}
-{% if lessons %}
-	<table border="1">	
-	{% for lesson in lessons %}
-		<tr>
-			<td> {{ lesson.name }} </td>
-			<td> {{ lesson.date }} </td>
-		</tr>
-	{% endfor %}
-	</table>
-{% else %}
-	<p>No lessons are available.</p>
-{% endif %}
-
+{% block details %}
+<td> Sign up </td>
 
 {% endblock %}
