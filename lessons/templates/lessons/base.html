@@ -48,7 +48,7 @@
 			alert("Your username and password didn't match. Please try again.");
 		</script>
 		{% endif %}
-          <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+          <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'login' %}">
 		  {% csrf_token %}
             <div class="form-group">
               <input type="text" name="username" placeholder="Username" class="form-control">
@@ -61,7 +61,7 @@
         </div><!--/.navbar-collapse -->
 		{% else %}
 		<div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'django.contrib.auth.views.logout' %}">
+          <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'logout' %}">
 		  {% csrf_token %}
             <a class="form-group"> Welcome, {{ user }}! </a>
             <button type="submit" class="btn btn-success">Log out</button>

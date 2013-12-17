@@ -28,6 +28,8 @@ ALLOWED_HOSTS = []
 
 
 LOGIN_REDIRECT_URL = '/lessons/'
+
+LOGIN_URL = '/'
 # Application definition
 
 INSTALLED_APPS = (
