@@ -1,12 +1,20 @@
 {% extends 'lessons/base.html' %}
 
 {% block content %}
+<div class="row">
 {% if lessons %}
-	<table border="1">	
+	<h3>Upcoming lessons</h3>
+	<table class="table table-striped">
+		<tr>
+			<th>Next lesson</th>
+			<th>Class</th>
+			<th>Status</th>
+		</tr>	
 	{% for lesson in lessons %}
 		<tr>
+			<td> {{ lesson.date | date:"SHORT_DATE_FORMAT" }} </td>
 			<td> {{ lesson.name }} </td>
-			<td> {{ lesson.date }} </td>
+			<td>Last spot left</td>
 			{% if user.is_authenticated %}
 			<td> Sign up </td>
 			{% endif %}
@@ -16,7 +24,7 @@
 {% else %}
 	<p>No lessons are available.</p>
 {% endif %}
-
+</div>
 
 {% endblock %}
   
