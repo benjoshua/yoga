@@ -15,7 +15,7 @@ class IndexView(generic.ListView):
     template_name = 'lessons/index.html'
     context_object_name = 'lessons'
     def get_queryset(self):
-        return Lesson.objects.all()
+        return Lesson.objects.order_by('date')[:4]
 
 
 def register(request):

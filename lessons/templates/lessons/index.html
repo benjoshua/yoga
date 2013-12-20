@@ -9,6 +9,9 @@
 			<th>Next lesson</th>
 			<th>Class</th>
 			<th>Status</th>
+			{% if user.is_authenticated %}
+			<th></th>
+			{% endif %}
 		</tr>	
 	{% for lesson in lessons %}
 		<tr>
@@ -16,7 +19,9 @@
 			<td> {{ lesson.name }} </td>
 			<td>Last spot left</td>
 			{% if user.is_authenticated %}
-			<td> Sign up </td>
+			<td>
+				<button type="button" class="btn btn-default btn-xs">Sign up</button>
+			</td>
 			{% endif %}
 		</tr>
 	{% endfor %}
