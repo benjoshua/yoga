@@ -67,7 +67,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'he'
+LANGUAGE_CODE = 'en'#'he'
 
 TIME_ZONE = 'Asia/Jerusalem Asia/Tel_Aviv Israel'
 
