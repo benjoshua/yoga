@@ -15,7 +15,7 @@
 		</tr>	
 	{% for lesson in lessons %}
 		<tr>
-			<td> {{ lesson.date | date:"SHORT_DATE_FORMAT" }} </td>
+			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
 			<td> {{ lesson.name }} </td>
 			<td>Last spot left</td>
 			{% if user.is_authenticated %}
