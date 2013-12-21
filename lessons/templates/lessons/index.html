@@ -17,7 +17,7 @@
 		<tr>
 			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
 			<td> {{ lesson.name }} </td>
-			<td>Last spot left</td>
+			<td><span class="badge">{{ lesson.spots_left}}</span> spots left</td>
 			{% if user.is_authenticated %}
 			<td>
 				<button type="button" class="btn btn-default btn-xs">Sign up</button>
