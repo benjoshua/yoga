@@ -17,13 +17,21 @@
 		<tr>
 			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
 			<td> {{ lesson.name }} </td>
-			<td><span class="badge">{{ lesson.spots_left}}</span> spots left</td>
+			<td>
+				{% if lesson.spots_left > 0 %}
+				<span class="badge">{{ lesson.spots_left }}</span> spots left
+				{% else %}
+				No spots left
+				{% endif %}
+			</td>
 			{% if user.is_authenticated %}
 			<td>
 				{% if user in lesson.student_array %}
 				<button type="button" class="btn btn-default btn-xs">Remove</button>
 				{% else %}
-				<button type="button" class="btn btn-default btn-xs">Sign up</button>
+					{% if lesson.spots_left > 0 %}
+					<button type="button" class="btn btn-default btn-xs">Sign up</button>
+					{% endif %}
 				{% endif %}
 			</td>
 			{% endif %}
