@@ -13,18 +13,22 @@
 			<th></th>
 			{% endif %}
 		</tr>	
-	{% for lesson in lessons %}
+		{% for lesson in lessons %}
 		<tr>
 			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
 			<td> {{ lesson.name }} </td>
 			<td><span class="badge">{{ lesson.spots_left}}</span> spots left</td>
 			{% if user.is_authenticated %}
 			<td>
+				{% if user in lesson.student_array %}
+				<button type="button" class="btn btn-default btn-xs">Remove</button>
+				{% else %}
 				<button type="button" class="btn btn-default btn-xs">Sign up</button>
+				{% endif %}
 			</td>
 			{% endif %}
 		</tr>
-	{% endfor %}
+		{% endfor %}
 	</table>
 {% else %}
 	<p>No lessons are available.</p>
