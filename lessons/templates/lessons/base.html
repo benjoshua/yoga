@@ -72,7 +72,9 @@
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-	 
+	{% if user.is_authenticated %}
+		 <br><br><br>
+	{% else %}
     <div class="jumbotron">
       <div class="container">
         <h1>YOGA</h1>
@@ -82,7 +84,7 @@
 		</form>
       </div>
     </div>
-
+	{% endif %}
 	
 	
     <div class="container">
