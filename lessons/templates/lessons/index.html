@@ -12,7 +12,9 @@
 			{% if user.is_authenticated %}
 			<th></th>
 			{% endif %}
-		</tr>	
+		</tr>
+		<form action="{% url 'attend' %}" method="post">
+		{% csrf_token %}
 		{% for lesson in lessons %}
 		<tr>
 			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
@@ -26,17 +28,18 @@
 			</td>
 			{% if user.is_authenticated %}
 			<td>
-				{% if user in lesson.student_array %}
-				<button type="button" class="btn btn-default btn-xs">Remove</button>
+				{% if user in lesson.students.all %}
+				<button type="submit" name="remove" value="{{ lesson.id }}" class="btn btn-default btn-xs">Remove</button>
 				{% else %}
 					{% if lesson.spots_left > 0 %}
-					<button type="button" class="btn btn-default btn-xs">Sign up</button>
+					<button type="submit" name="attend" value="{{ lesson.id }}" class="btn btn-default btn-xs">Sign up</button>
 					{% endif %}
 				{% endif %}
 			</td>
 			{% endif %}
 		</tr>
 		{% endfor %}
+		</form>
 	</table>
 {% else %}
 	<p>No lessons are available.</p>
