@@ -43,11 +43,7 @@
         </div>
 		{% if not user.is_authenticated %}
         <div class="navbar-collapse collapse">
-		{% if form.errors %}
-		<script>
-			alert("Your username and password didn't match. Please try again.");
-		</script>
-		{% endif %}
+		
           <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'login' %}">
 		  {% csrf_token %}
             <div class="form-group">
@@ -63,31 +59,22 @@
 		<div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'logout' %}">
 		  {% csrf_token %}
-            <a class="form-group"> Welcome, {{ user }}! </a>
+            <a class="form-group"> Welcome, {{ user.first_name }}! </a>
             <button type="submit" class="btn btn-success">Log out</button>
           </form>
         </div><!--/.navbar-collapse -->
 		{% endif %}
       </div>
+      {% if form.errors %}
+		<div class="alert alert-danger alert-dismissable">
+		  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		  <strong>Wrong credentials!</strong> Please check your username and password.
+		</div>
+		{% endif %}
     </div>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-	{% if user.is_authenticated %}
-		 <br><br><br>
-	{% else %}
-    <div class="jumbotron">
-      <div class="container">
-        <h1>YOGA</h1>
-        <p>Welcome to the Yoga lessons schedule!</p>
-		<form action="{% url 'register' %}">
-			<input type="submit" class="btn btn-primary btn-lg" value="Sign up &raquo">
-		</form>
-      </div>
-    </div>
-	{% endif %}
 	
 	
-    <div class="container">
+    
 	{% block content %}
     CONTENT
 	{% endblock %} 
@@ -96,7 +83,6 @@
       <footer>
         <p>&copy; Itayaron 2013</p>
       </footer>
-    </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript

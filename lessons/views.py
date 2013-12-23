@@ -2,10 +2,9 @@ from django.shortcuts import render
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from lessons.models import Lesson
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render
+from lessons.forms import UserCreateForm
 import datetime
 
 class IndexView(generic.ListView):
@@ -18,12 +17,15 @@ class IndexView(generic.ListView):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            new_user = form.save()
+        registration_form = UserCreateForm(request.POST)
+        if registration_form.is_valid():
+            new_user = registration_form.save()
+            new_user = authenticate(username=request.POST['username'],
+                                    password=request.POST['password1'])
+            login(request, new_user)
             return HttpResponseRedirect("/lessons/")
     else:
-        form = UserCreationForm()
+        registration_form = UserCreateForm()
     return render(request, "lessons/register.html", {
-        'form': form,
+        'registration_form': registration_form,
     })
