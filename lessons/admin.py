@@ -1,11 +1,10 @@
 from django.contrib import admin
-from lessons.models import Lesson, StudentsClassTime
+from lessons.models import Lesson
 
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('name','date')
+    list_display = ('name','date','student_list')
 
 
 admin.site.register(Lesson, LessonAdmin)
-admin.site.register(StudentsClassTime)
 
 # Register your models here.

@@ -1,22 +1,47 @@
 {% extends 'lessons/base.html' %}
 
 {% block content %}
+<div class="row">
 {% if lessons %}
-	<table class="table table-striped">	
-	{% for lesson in lessons %}
+	<h3>Upcoming lessons</h3>
+	<table class="table table-striped">
 		<tr>
-			<td> {{ lesson.name }} </td>
-			<td> {{ lesson.date }} </td>
+			<th>Next lesson</th>
+			<th>Class</th>
+			<th>Status</th>
 			{% if user.is_authenticated %}
-			<td> Sign up </td>
+			<th></th>
+			{% endif %}
+		</tr>	
+		{% for lesson in lessons %}
+		<tr>
+			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
+			<td> {{ lesson.name }} </td>
+			<td>
+				{% if lesson.spots_left > 0 %}
+				<span class="badge">{{ lesson.spots_left }}</span> spots left
+				{% else %}
+				No spots left
+				{% endif %}
+			</td>
+			{% if user.is_authenticated %}
+			<td>
+				{% if user in lesson.student_array %}
+				<button type="button" class="btn btn-default btn-xs">Remove</button>
+				{% else %}
+					{% if lesson.spots_left > 0 %}
+					<button type="button" class="btn btn-default btn-xs">Sign up</button>
+					{% endif %}
+				{% endif %}
+			</td>
 			{% endif %}
 		</tr>
-	{% endfor %}
+		{% endfor %}
 	</table>
 {% else %}
 	<p>No lessons are available.</p>
 {% endif %}
-
+</div>
 
 {% endblock %}
   
