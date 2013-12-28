@@ -1,11 +1,15 @@
-from django.shortcuts import render
 from django import forms
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.contrib.auth import authenticate, login
 from lessons.models import Lesson
 from lessons.forms import UserCreateForm
 import datetime
+# Create your views here.
+
 
 class IndexView(generic.ListView):
     model = Lesson
@@ -29,3 +33,28 @@ def register(request):
     return render(request, "lessons/register.html", {
         'registration_form': registration_form,
     })
+
+def attend(request):
+    try:
+        value = request.POST['remove']
+        action = 'remove'
+    except (KeyError):
+        try:
+            value = request.POST['attend']
+            action = 'attend'
+        except (KeyError):
+             return redirect('index')
+    
+    try:
+        selected_lesson = Lesson.objects.get(pk=value)
+    except (Lesson.DoesNotExist):
+        return redirect('index')
+    
+    if action == 'remove':
+        selected_lesson.students.remove(request.user)
+        messages.info(request, "You were removed from lesson :-) Hope to See you soon!")
+    elif action == 'attend':
+        selected_lesson.students.add(request.user)
+        messages.success(request, "You were successfully signed up :-) See you there!")
+    selected_lesson.save()
+    return redirect('index')
