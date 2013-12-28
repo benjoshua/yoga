@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import generic
@@ -43,7 +43,7 @@ def attend(request):
             value = request.POST['attend']
             action = 'attend'
         except (KeyError):
-             return redirect('index')
+            return redirect('index')
     
     try:
         selected_lesson = Lesson.objects.get(pk=value)
