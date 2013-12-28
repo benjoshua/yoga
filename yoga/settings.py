@@ -26,7 +26,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# comment
 LOGIN_REDIRECT_URL = '/lessons/'
 
 LOGIN_URL = '/'
