@@ -1,131 +1,87 @@
 {% extends 'lessons/base.html' %}
-
-
-
 {% block content %}
-<<<<<<< HEAD
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
 {% if user.is_authenticated %}
-	 <br><br><br>
+<br><br><br>
 {% else %}
 <div class="jumbotron">
-  <div class="container">
-    <h1>YOGA</h1>
-    <p>Welcome to the Yoga lessons schedule!</p>
-	<form action="{% url 'register' %}">
-		<input type="submit" class="btn btn-primary btn-lg" value="Sign up &raquo">
-	</form>
-  </div>
+    <div class="container">
+        <h1>YOGA</h1>
+
+        <p>Welcome to the Yoga lessons schedule!</p>
+
+        <form action="{% url 'register' %}">
+            <input type="submit" class="btn btn-primary btn-lg" value="Sign up &raquo">
+        </form>
+    </div>
 </div>
 {% endif %}
 
 <div class="container">
-	{% if messages %}
-	<div class="row">
-		<div class="col-lg-12">
-			{% for message in messages %}
-			<div class="alert alert-{{ message.tags }}">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-					×
-				</button>
-				{{ message }}
-			</div>
-			{% endfor %}
-		</div>
-	</div>
-	{% endif %}
-	<div class="row">
-	{% if lessons %}
-		<h3>Upcoming lessons</h3>
-		<table class="table table-striped">
-			<tr>
-				<th>Next lesson</th>
-				<th>Class</th>
-				<th>Status</th>
-				{% if user.is_authenticated %}
-				<th></th>
-				{% endif %}
-		</tr>
-		<form action="{% url 'attend' %}" method="post">
-		{% csrf_token %}
-			{% for lesson in lessons %}
-			<tr>
-				<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
-				<td> {{ lesson.name }} </td>
-				<td>
-					{% if lesson.spots_left > 0 %}
-					<span class="badge">{{ lesson.spots_left }}</span> spots left
-					{% else %}
-					No spots left
-					{% endif %}
-				</td>
-				{% if user.is_authenticated %}
-				<td>
-				{% if user in lesson.students.all %}
-				<button type="submit" name="remove" value="{{ lesson.id }}" class="btn btn-default btn-xs">Remove</button>
-					{% else %}
-						{% if lesson.spots_left > 0 %}
-					<button type="submit" name="attend" value="{{ lesson.id }}" class="btn btn-default btn-xs">Sign up</button>
-						{% endif %}
-=======
-<div class="row">
-{% if lessons %}
-	<h3>Upcoming lessons</h3>
-	<table class="table table-striped">
-		<tr>
-			<th>Next lesson</th>
-			<th>Class</th>
-			<th>Status</th>
-			{% if user.is_authenticated %}
-			<th></th>
-			{% endif %}
-		</tr>
-		<form action="{% url 'attend' %}" method="post">
-		{% csrf_token %}
-		{% for lesson in lessons %}
-		<tr>
-			<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
-			<td> {{ lesson.name }} </td>
-			<td>
-				{% if lesson.spots_left > 0 %}
-				<span class="badge">{{ lesson.spots_left }}</span> spots left
-				{% else %}
-				No spots left
-				{% endif %}
-			</td>
-			{% if user.is_authenticated %}
-			<td>
-				{% if user in lesson.students.all %}
-				<button type="submit" name="remove" value="{{ lesson.id }}" class="btn btn-default btn-xs">Remove</button>
-				{% else %}
-					{% if lesson.spots_left > 0 %}
-					<button type="submit" name="attend" value="{{ lesson.id }}" class="btn btn-default btn-xs">Sign up</button>
->>>>>>> 9e07bf98c449cb3cee57c717a680d604740e0589
-					{% endif %}
-				</td>
-				{% endif %}
-<<<<<<< HEAD
-			</tr>
-			{% endfor %}
-		</form>
-		</table>
-	{% else %}
-		<p>No lessons are available.</p>
-	{% endif %}
-	</div>
-=======
-			</td>
-			{% endif %}
-		</tr>
-		{% endfor %}
-		</form>
-	</table>
-{% else %}
-	<p>No lessons are available.</p>
-{% endif %}
->>>>>>> 9e07bf98c449cb3cee57c717a680d604740e0589
-</div>
+    {% if messages %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×
+                </button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        {% if lessons %}
+        <h3>Upcoming lessons</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Next lesson</th>
+                <th>Class</th>
+                <th>Status</th>
+                {% if user.is_authenticated %}
+                <th></th>
+                {% endif %}
+            </tr>
+            <form action="{% url 'attend' %}" method="post">
+                {% csrf_token %}
+                {% for lesson in lessons %}
+                <tr>
+                    <td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
+                    <td> {{ lesson.name }}</td>
+                    <td>
+                        {% if lesson.spots_left > 0 %}
+                        <span class="badge">{{ lesson.spots_left }}</span> spots left
+                        {% else %}
+                        No spots left
+                        {% endif %}
+                    </td>
+                    {% if user.is_authenticated %}
+                    <td>
+                        {% if user in lesson.students.all %}
+                        <button type="submit" name="remove" value="{{ lesson.id }}" class="btn btn-default btn-xs">
+                            Remove
+                        </button>
+                        {% else %}
+                            {% if lesson.spots_left > 0 %}
+                            <button type="submit" name="attend" value="{{ lesson.id }}" class="btn btn-default btn-xs">Sign
+                                up
+                            </button>
+                            {% endif %}
+                        {% endif %}
 
-{% endblock %}
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </form>
+        </table>
+        {% else %}
+        <p>No lessons are available.</p>
+        {% endif %}
+    </div>
+
+    {% endblock %}
   

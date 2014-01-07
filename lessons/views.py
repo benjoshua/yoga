@@ -1,24 +1,14 @@
-<<<<<<< HEAD
-=======
->>>>>>> 9e07bf98c449cb3cee57c717a680d604740e0589
-from django import forms
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.views import generic
-<<<<<<< HEAD
+
 from django.contrib.auth import authenticate, login
-from lessons.models import Lesson
 from lessons.forms import UserCreateForm
+from django.views import generic
 import datetime
-=======
 from lessons.models import Lesson
 from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 
-# Create your views here.
 
->>>>>>> 9e07bf98c449cb3cee57c717a680d604740e0589
 
 class IndexView(generic.ListView):
     model = Lesson
@@ -40,8 +30,7 @@ def register(request):
     else:
         registration_form = UserCreateForm()
     return render(request, "lessons/register.html", {
-<<<<<<< HEAD
-        'registration_form': registration_form,
+        'registration_form': registration_form
     })
 
 def attend(request):
@@ -71,4 +60,3 @@ def attend(request):
 
     selected_lesson.save()
     return redirect('index')
->>>>>>> 9e07bf98c449cb3cee57c717a680d604740e0589
