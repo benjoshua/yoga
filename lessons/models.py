@@ -11,9 +11,6 @@ class Lesson(models.Model):
         return ", ".join([student.first_name for student in self.students.all()])
     student_list.short_description = "Students"
     
-    def student_array(self):
-        return self.students.all()
-    
     def current_time(self):
         return timezone.now()
     
