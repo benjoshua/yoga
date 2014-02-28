@@ -5,17 +5,21 @@ from django.conf.urls import url
 from tastypie.utils import trailing_slash
 from tastypie import fields
 from tastypie.resources import ModelResource
-from tastypie.authorization import DjangoAuthorization
+from tastypie.authorization import Authorization
 from lessons.models import Lesson
 
+
 class UserResource(ModelResource):
+
     class Meta:
         queryset = User.objects.all()
         resource_name = 'user'
         #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['id']#first_name', 'last_name', 'email']
         allowed_methods = ['get', 'post']
+        include_resource_uri = False
         #authentication = BasicAuthentication()
+        authorization = Authorization()
         
     def prepend_urls(self):
         return [
@@ -64,12 +68,17 @@ class UserResource(ModelResource):
 
 class LessonResource(ModelResource):
     #user = fields.ForeignKey(UserResource,'user')
-    
+    students = fields.ManyToManyField(UserResource, 'students', full=True)
+
+    # TODO - need to figure out what to do with hydrate/dehydrate when patching!
+    # Currently it modifies the users!!!
     
     class Meta:
         queryset = Lesson.objects.all()
-        authorization = DjangoAuthorization()
+        #authorization = DjangoAuthorization()
+        allowed_methods = ['get', 'post', 'patch']
         #include_resource_uri = False
         excludes = ['id']
         resource_name = 'lesson'
-        
+        authorization = Authorization()
+

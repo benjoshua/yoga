@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
@@ -29,3 +29,7 @@ def register(request):
     return render(request, "lessons/register.html", {
         'registration_form': registration_form,
     })
+
+def signup(request, lesson_id, student_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    lesson.students.
