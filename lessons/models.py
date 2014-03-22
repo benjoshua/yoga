@@ -31,17 +31,19 @@ class Subscription(models.Model):
 
 class LessonType(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField()
+    description = models.CharField(max_length=400)
+    def __unicode__(self):
+        return self.name
 
 
 class Lesson(models.Model):
-    name = models.CharField(max_length=200)
-    date = models.DateTimeField('Lesson Time')
     lessonType = models.ForeignKey(LessonType)
+    date = models.DateTimeField('Lesson Time')
     teacher = models.ForeignKey(Teacher)
     location = models.ForeignKey(Location)
-    length = models.TimeField('Lesson Length')
-    waitingList = models.CommaSeparatedIntegerField(max_length=10)
+    length = models.TimeField('Lesson Length', default="01:15")
+    notificationList = models.CommaSeparatedIntegerField(blank=True, null=True, max_length=30)
+    comments = models.CharField(blank=True, null=True, max_length=200)
     students = models.ManyToManyField(User, through='RegisteredStudent')
 
     def student_list(self):
@@ -52,14 +54,15 @@ class Lesson(models.Model):
         return timezone.now()
     
     def spots_left(self):
-        return 15 - self.students.count()
+        return self.location.capacity - self.students.count()
     
     def __unicode__(self):
-        return self.name
+        return self.lessonType.name
 
 class RegisteredStudent(models.Model):
     lesson = models.ForeignKey(Lesson)
     student = models.ForeignKey(User)
+    registrationTime = models.DateTimeField()
     attended = models.BooleanField(default=False)
 
 

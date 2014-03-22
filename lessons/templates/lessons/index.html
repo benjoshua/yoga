@@ -36,6 +36,24 @@
     <div class="row">
         {% if lessons %}
         <h3>Upcoming lessons</h3>
+
+        <!--<table class="table table-striped">-->
+            <!--<tr>-->
+                <!--<th>Sunday</th>-->
+                <!--<th>Monday</th>-->
+                <!--<th>Tuesday</th>-->
+                <!--<th>Wednesday</th>-->
+                <!--<th>Thursday</th>-->
+                <!--<th>Friday</th>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--{% for lesson in lessons %}-->
+                <!--<td> {{ regroup lessons by </td>-->
+                <!--{% endfor %}-->
+            <!--</tr>-->
+        <!--</table>-->
+
+
         <table class="table table-striped">
             <tr>
                 <th>Next lesson</th>
@@ -49,8 +67,8 @@
                 {% csrf_token %}
                 {% for lesson in lessons %}
                 <tr>
-                    <td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
-                    <td> {{ lesson.name }}</td>
+                    <td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, h:i" }}</td>
+                    <td> {{ lesson.lessonType.name }}</td>
                     <td>
                         {% if lesson.spots_left > 0 %}
                         <span class="badge">{{ lesson.spots_left }}</span> spots left
@@ -65,11 +83,11 @@
                             Remove
                         </button>
                         {% else %}
-                            {% if lesson.spots_left > 0 %}
-                            <button type="submit" name="attend" value="{{ lesson.id }}" class="btn btn-default btn-xs">Sign
-                                up
-                            </button>
-                            {% endif %}
+                        {% if lesson.spots_left > 0 %}
+                        <button type="submit" name="attend" value="{{ lesson.id }}" class="btn btn-default btn-xs">Sign
+                            up
+                        </button>
+                        {% endif %}
                         {% endif %}
 
                     </td>
