@@ -7,7 +7,7 @@ from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from django.shortcuts import get_object_or_404
-from lessons.models import Lesson
+from lessons.models import Lesson, RegisteredStudent
 
 
 class UserResource(ModelResource):
@@ -104,7 +104,8 @@ class LessonResource(ModelResource):
 
         student = get_object_or_404(User, username=username)
         lesson = get_object_or_404(Lesson, id=lesson_id)
-        lesson.students.add(student)
+        rs = RegisteredStudent(lesson=lesson,student=student)
+        rs.save()
         return self.create_response(request, { 'success': True })
 
     def remove(self, request, **kwargs):
@@ -117,7 +118,8 @@ class LessonResource(ModelResource):
 
         student = get_object_or_404(User, username=username)
         lesson = get_object_or_404(Lesson, id=lesson_id)
-        lesson.students.delete(student)
+        rs = get_object_or_404(RegisteredStudent, lesson=lesson,student=student)
+        rs.delete()
         return self.create_response(request, { 'success': True })
 
 

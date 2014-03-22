@@ -44,5 +44,6 @@ def signup(request, lesson_id, student_id):
 def remove(request, lesson_id, student_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
     student = get_object_or_404(User, id=student_id)
-    lesson.students.remove(student)
+    rs = get_object_or_404(RegisteredStudent, lesson=lesson,student=student)
+    rs.delete()
     return redirect("/lessons/")

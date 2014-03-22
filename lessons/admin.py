@@ -7,11 +7,14 @@ class LessonAdmin(admin.ModelAdmin):
 class LessonTypeAdmin(admin.ModelAdmin):
     list_display = ('name','description')
 
+class RegisteredStudentAdmin(admin.ModelAdmin):
+    list_display = ('lesson','student','registrationTime')
+
 
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(LessonType, LessonTypeAdmin)
 admin.site.register(Subscription)
-admin.site.register(RegisteredStudent)
+admin.site.register(RegisteredStudent, RegisteredStudentAdmin)
 admin.site.register(Teacher)
 admin.site.register(Location)
 

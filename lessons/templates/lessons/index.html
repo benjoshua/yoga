@@ -84,16 +84,19 @@
                 {% if user.is_authenticated %}
                 <td>
                     <button class="btn btn-primary lessonDetails" data-toggle="modal" data-target=".bs-example-modal-sm"
-                            data-id="{{ lesson.id }}/{{ user.id }}">Lesson details
+                            data-id="{{ lesson.id }}/{{ user.id }}">
+                        Lesson details
                     </button>
-                    {% if user in lesson.student_array %}
-                    <a href="{% url 'remove' lesson.id user.id %}" class="btn btn-default btn-xs"
-                       role="button">Remove</a>
+                    {% if user in lesson.students.all %}
+                        <a href="{% url 'remove' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">
+                            Remove
+                        </a>
                     {% else %}
-                    {% if lesson.spots_left > 0 %}
-                    <a href="{% url 'signup' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Sign
-                        up</a>
-                    {% endif %}
+                        {% if lesson.spots_left > 0 %}
+                            <a href="{% url 'signup' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">
+                                Sign up
+                            </a>
+                        {% endif %}
                     {% endif %}
                 </td>
                 {% endif %}
@@ -125,6 +128,7 @@
      $("#signupLesson").attr("href","signup/" + $(this).data('id'));
    });
 });
+
 
 </script>
 
