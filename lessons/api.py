@@ -7,7 +7,7 @@ from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from django.shortcuts import get_object_or_404
-from lessons.models import Lesson, RegisteredStudent
+from lessons.models import Lesson, LessonType, Location, Teacher, RegisteredStudent
 
 
 class UserResource(ModelResource):
@@ -16,7 +16,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['id','first_name', 'last_name', 'email']
         allowed_methods = ['get', 'post']
         include_resource_uri = False
         #authentication = BasicAuthentication()
@@ -67,9 +67,35 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
 
 
+class LessonTypeResource(ModelResource):
+    class Meta:
+        queryset = LessonType.objects.all()
+        resource_name = 'lessonType'
+        include_resource_uri = False
+        fields = ['id','name']
+
+class LocationResource(ModelResource):
+    class Meta:
+        queryset = Location.objects.all()
+        resource_name = 'location'
+        include_resource_uri = False
+        fields = ['id','name']
+
+class TeacherResource(ModelResource):
+    class Meta:
+        queryset = Teacher.objects.all()
+        resource_name = 'teacher'
+        include_resource_uri = False
+        fields = ['id','name']
+
+
 class LessonResource(ModelResource):
     #user = fields.ForeignKey(UserResource,'user')
+    lessonType = fields.ForeignKey(LessonTypeResource, 'lessonType', full=True)
+    location = fields.ForeignKey(LocationResource, 'location', full=True)
+    teacher = fields.ForeignKey(TeacherResource, 'teacher', full=True)
     students = fields.ManyToManyField(UserResource, 'students', full=True)
+
 
     # TODO - need to figure out what to do with hydrate/dehydrate when patching!
     # Currently it modifies the users!!!
