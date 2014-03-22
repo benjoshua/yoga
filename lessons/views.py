@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.models import User
 from django.views import generic
 from django.contrib.auth import authenticate, login
 from lessons.models import Lesson
@@ -32,4 +33,13 @@ def register(request):
 
 def signup(request, lesson_id, student_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
-    lesson.students.
+    student = get_object_or_404(User, id=student_id)
+    lesson.students.add(student)
+    student.messages
+    return redirect("/lessons/")
+
+def remove(request, lesson_id, student_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    student = get_object_or_404(User, id=student_id)
+    lesson.students.remove(student)
+    return redirect("/lessons/")

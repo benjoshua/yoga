@@ -11,6 +11,7 @@ v1_api.register(LessonResource())
 urlpatterns = patterns('',
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^register/', views.register, name='register'),
-    url(r'^sign_up/?P<lesson_id>/?P<student_id>/$', views.signup, name='signup'),
+    url(r'^signup/(?P<lesson_id>\d+)/(?P<student_id>\d+)/$', views.signup, name='signup'),
+    url(r'^remove/(?P<lesson_id>\d+)/(?P<student_id>\d+)/$', views.remove, name='remove'),
     (r'^api/', include(v1_api.urls)),
 )

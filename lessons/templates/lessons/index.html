@@ -21,6 +21,13 @@
 
 <div class="container">
 	<div class="row">
+        {% if user.messages %}
+        {% for msg in user.messages %}
+        <div class="alert alert-success">
+            {{ msg }}
+            </div>
+        {% endfor %}
+        {% endif %}
 	{% if lessons %}
 		<h3>Upcoming lessons</h3>
 		<table class="table table-striped">
@@ -45,11 +52,12 @@
 				</td>
 				{% if user.is_authenticated %}
 				<td>
+                    <button class="btn btn-primary lessonDetails" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="{{ lesson.id }}/{{ user.id }}">Lesson details</button>
 					{% if user in lesson.student_array %}
-					<button type="button" class="btn btn-default btn-xs">Remove</button>
+                    <a href="{% url 'remove' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Remove</a>
 					{% else %}
 						{% if lesson.spots_left > 0 %}
-						<button type="button" class="btn btn-default btn-xs">Sign up</button>
+                    <a href="{% url 'signup' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Sign up</a>
 						{% endif %}
 					{% endif %}
 				</td>
@@ -62,6 +70,26 @@
 	{% endif %}
 	</div>
 </div>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <a href="#" id="removeLesson" class="btn btn-default btn-xs" role="button">Remove</a>
+      <a href="#" id="signupLesson" class="btn btn-default btn-xs" role="button">Sign up</a>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(function(){
+   $(".lessonDetails").click(function(){
+        console.log($(this).data('id'));
+     $("#removeLesson").attr("href","remove/" + $(this).data('id'));
+     $("#signupLesson").attr("href","signup/" + $(this).data('id'));
+   });
+});
+</script>
 
 {% endblock %}
   
