@@ -6,6 +6,7 @@ from tastypie.utils import trailing_slash
 from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
+from django.shortcuts import get_object_or_404
 from lessons.models import Lesson
 
 
@@ -15,7 +16,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         #excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
-        fields = ['id']#first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email']
         allowed_methods = ['get', 'post']
         include_resource_uri = False
         #authentication = BasicAuthentication()
@@ -33,7 +34,7 @@ class UserResource(ModelResource):
         
     def login(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
-        
+
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
 
         username = data.get('username', '')
@@ -81,4 +82,45 @@ class LessonResource(ModelResource):
         excludes = ['id']
         resource_name = 'lesson'
         authorization = Authorization()
+
+    def prepend_urls(self):
+        return [
+            url(r'^(?P<resource_name>%s)/signup%s$' %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('signup'), name="api_signup"),
+             url(r'^(?P<resource_name>%s)/remove%s$' %
+                 (self._meta.resource_name, trailing_slash()),
+                 self.wrap_view('remove'), name='api_remove'),
+        ]
+
+
+    def signup(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        username = data.get('username', '')
+        lesson_id = data.get('lesson', '')
+
+        student = get_object_or_404(User, username=username)
+        lesson = get_object_or_404(Lesson, id=lesson_id)
+        lesson.students.add(student)
+        return self.create_response(request, { 'success': True })
+
+    def remove(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        username = data.get('username', '')
+        lesson_id = data.get('lesson', '')
+
+        student = get_object_or_404(User, username=username)
+        lesson = get_object_or_404(Lesson, id=lesson_id)
+        lesson.students.delete(student)
+        return self.create_response(request, { 'success': True })
+
+
+
+
 

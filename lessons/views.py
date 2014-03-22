@@ -35,7 +35,6 @@ def signup(request, lesson_id, student_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
     student = get_object_or_404(User, id=student_id)
     lesson.students.add(student)
-    student.messages
     return redirect("/lessons/")
 
 def remove(request, lesson_id, student_id):
