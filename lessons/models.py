@@ -38,8 +38,6 @@ class LessonType(models.Model):
 
 class Lesson(models.Model):
     lessonType = models.ForeignKey(LessonType)
-    description = models.CharField(max_length=200)
-    spots = models.IntegerField(default=15)
     date = models.DateTimeField('Lesson Time')
     teacher = models.ForeignKey(Teacher)
     location = models.ForeignKey(Location)
@@ -64,7 +62,7 @@ class Lesson(models.Model):
 class RegisteredStudent(models.Model):
     lesson = models.ForeignKey(Lesson)
     student = models.ForeignKey(User)
-    registrationTime = models.DateTimeField()
+    registrationTime = models.DateTimeField(auto_now_add=True)
     attended = models.BooleanField(default=False)
 
 

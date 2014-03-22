@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from lessons.forms import UserCreateForm
 from django.views import generic
 import datetime
-from lessons.models import Lesson
+from lessons.models import Lesson, RegisteredStudent
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -37,7 +37,8 @@ def register(request):
 def signup(request, lesson_id, student_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
     student = get_object_or_404(User, id=student_id)
-    lesson.students.add(student)
+    rs = RegisteredStudent(lesson=lesson,student=student)
+    rs.save()
     return redirect("/lessons/")
 
 def remove(request, lesson_id, student_id):

@@ -38,26 +38,26 @@
         {% for msg in user.messages %}
         <div class="alert alert-success">
             {{ msg }}
-            </div>
+        </div>
         {% endfor %}
         {% endif %}
         {% if lessons %}
         <h3>Upcoming lessons</h3>
 
         <!--<table class="table table-striped">-->
-            <!--<tr>-->
-                <!--<th>Sunday</th>-->
-                <!--<th>Monday</th>-->
-                <!--<th>Tuesday</th>-->
-                <!--<th>Wednesday</th>-->
-                <!--<th>Thursday</th>-->
-                <!--<th>Friday</th>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--{% for lesson in lessons %}-->
-                <!--<td> {{ regroup lessons by </td>-->
-                <!--{% endfor %}-->
-            <!--</tr>-->
+        <!--<tr>-->
+        <!--<th>Sunday</th>-->
+        <!--<th>Monday</th>-->
+        <!--<th>Tuesday</th>-->
+        <!--<th>Wednesday</th>-->
+        <!--<th>Thursday</th>-->
+        <!--<th>Friday</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--{% for lesson in lessons %}-->
+        <!--<td> {{ regroup lessons by </td>-->
+        <!--{% endfor %}-->
+        <!--</tr>-->
         <!--</table>-->
 
 
@@ -70,48 +70,51 @@
                 <th></th>
                 {% endif %}
             </tr>
-            <form action="{% url 'attend' %}" method="post">
-                {% csrf_token %}
-                {% for lesson in lessons %}
-                <tr>
-                    <td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, h:i" }}</td>
-                    <td> {{ lesson.lessonType.name }}</td>
-                    <td>
-                        {% if lesson.spots_left > 0 %}
-                        <span class="badge">{{ lesson.spots_left }}</span> spots left
-                        {% else %}
-                        No spots left
-                        {% endif %}
-                    </td>
-                    {% if user.is_authenticated %}
-                    <td>
-                    <button class="btn btn-primary lessonDetails" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="{{ lesson.id }}/{{ user.id }}">Lesson details</button>
-					{% if user in lesson.student_array %}
-                    <a href="{% url 'remove' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Remove</a>
-					{% else %}
-						{% if lesson.spots_left > 0 %}
-                    <a href="{% url 'signup' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Sign up</a>
-						{% endif %}
-					{% endif %}
-				</td>
-				{% endif %}
-			</tr>
-			{% endfor %}
-		</table>
-	{% else %}
-		<p>No lessons are available.</p>
-	{% endif %}
-	</div>
+            {% for lesson in lessons %}
+            <tr>
+                <td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, h:i" }}</td>
+                <td> {{ lesson.lessonType.name }}</td>
+                <td>
+                    {% if lesson.spots_left > 0 %}
+                    <span class="badge">{{ lesson.spots_left }}</span> spots left
+                    {% else %}
+                    No spots left
+                    {% endif %}
+                </td>
+                {% if user.is_authenticated %}
+                <td>
+                    <button class="btn btn-primary lessonDetails" data-toggle="modal" data-target=".bs-example-modal-sm"
+                            data-id="{{ lesson.id }}/{{ user.id }}">Lesson details
+                    </button>
+                    {% if user in lesson.student_array %}
+                    <a href="{% url 'remove' lesson.id user.id %}" class="btn btn-default btn-xs"
+                       role="button">Remove</a>
+                    {% else %}
+                    {% if lesson.spots_left > 0 %}
+                    <a href="{% url 'signup' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Sign
+                        up</a>
+                    {% endif %}
+                    {% endif %}
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No lessons are available.</p>
+        {% endif %}
+    </div>
 </div>
 
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <a href="#" id="removeLesson" class="btn btn-default btn-xs" role="button">Remove</a>
-      <a href="#" id="signupLesson" class="btn btn-default btn-xs" role="button">Sign up</a>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <a href="#" id="removeLesson" class="btn btn-default btn-xs" role="button">Remove</a>
+            <a href="#" id="signupLesson" class="btn btn-default btn-xs" role="button">Sign up</a>
+        </div>
     </div>
-  </div>
 </div>
 
 <script>
@@ -122,7 +125,8 @@
      $("#signupLesson").attr("href","signup/" + $(this).data('id'));
    });
 });
+
 </script>
 
-    {% endblock %}
+{% endblock %}
   
