@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from django.views import generic
 from django.contrib.auth import authenticate, login
-from lessons.models import Lesson
 from lessons.forms import UserCreateForm
+from django.views import generic
 import datetime
+from lessons.models import Lesson
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+
+
 
 class IndexView(generic.ListView):
     model = Lesson
@@ -28,7 +31,7 @@ def register(request):
     else:
         registration_form = UserCreateForm()
     return render(request, "lessons/register.html", {
-        'registration_form': registration_form,
+        'registration_form': registration_form
     })
 
 def signup(request, lesson_id, student_id):

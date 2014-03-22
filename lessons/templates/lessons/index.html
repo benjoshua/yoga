@@ -1,26 +1,39 @@
 {% extends 'lessons/base.html' %}
-
-
-
 {% block content %}
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
 {% if user.is_authenticated %}
-	 <br><br><br>
+<br><br><br>
 {% else %}
 <div class="jumbotron">
-  <div class="container">
-    <h1>YOGA</h1>
-    <p>Welcome to the Yoga lessons schedule!</p>
-	<form action="{% url 'register' %}">
-		<input type="submit" class="btn btn-primary btn-lg" value="Sign up &raquo">
-	</form>
-  </div>
+    <div class="container">
+        <h1>YOGA</h1>
+
+        <p>Welcome to the Yoga lessons schedule!</p>
+
+        <form action="{% url 'register' %}">
+            <input type="submit" class="btn btn-primary btn-lg" value="Sign up &raquo">
+        </form>
+    </div>
 </div>
 {% endif %}
 
 <div class="container">
-	<div class="row">
+    {% if messages %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×
+                </button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
         {% if user.messages %}
         {% for msg in user.messages %}
         <div class="alert alert-success">
@@ -28,30 +41,50 @@
             </div>
         {% endfor %}
         {% endif %}
-	{% if lessons %}
-		<h3>Upcoming lessons</h3>
-		<table class="table table-striped">
-			<tr>
-				<th>Next lesson</th>
-				<th>Class</th>
-				<th>Status</th>
-				{% if user.is_authenticated %}
-				<th></th>
-				{% endif %}
-			</tr>	
-			{% for lesson in lessons %}
-			<tr>
-				<td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, l" }}</td>
-				<td> {{ lesson.name }} </td>
-				<td>
-					{% if lesson.spots_left > 0 %}
-					<span class="badge">{{ lesson.spots_left }}</span> spots left
-					{% else %}
-					No spots left
-					{% endif %}
-				</td>
-				{% if user.is_authenticated %}
-				<td>
+        {% if lessons %}
+        <h3>Upcoming lessons</h3>
+
+        <!--<table class="table table-striped">-->
+            <!--<tr>-->
+                <!--<th>Sunday</th>-->
+                <!--<th>Monday</th>-->
+                <!--<th>Tuesday</th>-->
+                <!--<th>Wednesday</th>-->
+                <!--<th>Thursday</th>-->
+                <!--<th>Friday</th>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--{% for lesson in lessons %}-->
+                <!--<td> {{ regroup lessons by </td>-->
+                <!--{% endfor %}-->
+            <!--</tr>-->
+        <!--</table>-->
+
+
+        <table class="table table-striped">
+            <tr>
+                <th>Next lesson</th>
+                <th>Class</th>
+                <th>Status</th>
+                {% if user.is_authenticated %}
+                <th></th>
+                {% endif %}
+            </tr>
+            <form action="{% url 'attend' %}" method="post">
+                {% csrf_token %}
+                {% for lesson in lessons %}
+                <tr>
+                    <td title="{{ lesson.current_time|timesince:lesson.date }}">{{ lesson.date | date:"d/m/y, h:i" }}</td>
+                    <td> {{ lesson.lessonType.name }}</td>
+                    <td>
+                        {% if lesson.spots_left > 0 %}
+                        <span class="badge">{{ lesson.spots_left }}</span> spots left
+                        {% else %}
+                        No spots left
+                        {% endif %}
+                    </td>
+                    {% if user.is_authenticated %}
+                    <td>
                     <button class="btn btn-primary lessonDetails" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="{{ lesson.id }}/{{ user.id }}">Lesson details</button>
 					{% if user in lesson.student_array %}
                     <a href="{% url 'remove' lesson.id user.id %}" class="btn btn-default btn-xs" role="button">Remove</a>
@@ -91,5 +124,5 @@
 });
 </script>
 
-{% endblock %}
+    {% endblock %}
   

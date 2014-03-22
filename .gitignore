@@ -1,5 +1,5 @@
 *.pyc
 .project
-.pydevproject
+.pydevproject*.orig
 *.orig
-db.sqlite3
+db.sqlite3
