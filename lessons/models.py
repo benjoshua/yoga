@@ -54,7 +54,10 @@ class Lesson(models.Model):
         return timezone.now()
     
     def spots_left(self):
-        return self.location.capacity - self.students.count()
+        return self.location.capacity - self.students.count() > 0
+
+    # def last_registered(self):
+    #     return self.students.latest('registeredstudent') if self.students else None
     
     def __unicode__(self):
         return self.lessonType.name

@@ -5,7 +5,8 @@ from django.conf.urls import url
 from tastypie.utils import trailing_slash
 from tastypie import fields
 from tastypie.resources import ModelResource
-from tastypie.authorization import Authorization
+from tastypie.authorization import DjangoAuthorization
+from tastypie.authentication import SessionAuthentication
 from django.shortcuts import get_object_or_404
 from lessons.models import Lesson, LessonType, Location, Teacher, RegisteredStudent
 
@@ -19,17 +20,17 @@ class UserResource(ModelResource):
         fields = ['id','first_name', 'last_name', 'email']
         allowed_methods = ['get', 'post']
         include_resource_uri = False
-        #authentication = BasicAuthentication()
-        authorization = Authorization()
+        authentication = SessionAuthentication()
+        authorization = DjangoAuthorization()
         
     def prepend_urls(self):
         return [
             url(r'^(?P<resource_name>%s)/login%s$' %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('login'), name="api_login"),
-#             url(r'^(?P<resource_name>%s)/logout%s$' %
-#                 (self._meta.resource_name, trailing_slash()),
-#                 self.wrap_view('logout'), name='api_logout'),
+            url(r'^(?P<resource_name>%s)/logout%s$' %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('logout'), name='api_logout'),
         ]
         
     def login(self, request, **kwargs):
@@ -90,24 +91,18 @@ class TeacherResource(ModelResource):
 
 
 class LessonResource(ModelResource):
-    #user = fields.ForeignKey(UserResource,'user')
     lessonType = fields.ForeignKey(LessonTypeResource, 'lessonType', full=True)
     location = fields.ForeignKey(LocationResource, 'location', full=True)
     teacher = fields.ForeignKey(TeacherResource, 'teacher', full=True)
     students = fields.ManyToManyField(UserResource, 'students', full=True)
-
-
-    # TODO - need to figure out what to do with hydrate/dehydrate when patching!
-    # Currently it modifies the users!!!
     
     class Meta:
         queryset = Lesson.objects.all()
-        #authorization = DjangoAuthorization()
-        allowed_methods = ['get', 'post', 'patch']
-        #include_resource_uri = False
-        excludes = ['id']
+        allowed_methods = ['get', 'post']
+        include_resource_uri = False
         resource_name = 'lesson'
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
+        authentication = SessionAuthentication()
 
     def prepend_urls(self):
         return [

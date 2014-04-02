@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'lessons',
     'tastypie',
     'django_extensions',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
