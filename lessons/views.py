@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from lessons.forms import UserCreateForm
 from django.views import generic
@@ -93,3 +93,39 @@ def signup_api(request,format=None):
     #TODO - handle case when class if full and notify students
 
     return Response({ 'success': True })
+
+@api_view(['POST'])
+def login_api(request,format=None):
+
+        username = request.DATA.get('username', '')
+        password = request.DATA.get('password', '')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                content = {'success': True}
+                return Response(content)
+            else:
+                content = {
+                'success': False,
+                'reason': 'incorrect',
+                }
+                return Response(content, status=status.HTTP_403_FORBIDDEN)
+        else:
+            content = {
+                'success': True,
+                'reason': 'incorrect',
+            }
+            return Response(content, status=status.HTTP_403_FORBIDDEN)
+
+@api_view(['GET'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
+def logout_api(request,format=None):
+
+    if request.user and request.user.is_authenticated():
+        logout(request)
+        return Response({ 'success': True })
+    else:
+        return Response({ 'success': False }, status=status.HTTP_403_FORBIDDEN)
