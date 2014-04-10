@@ -1,0 +1,52 @@
+{% load staticfiles %}
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "lessons/dist/css/bootstrap.css" %}">
+</head>
+<body ng-app="LessonsApp">
+<div class="content" ng-controller="LessonsCtrl">
+    <table class="table table-striped">
+        <thead>
+        <th>
+            Lesson Type
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Length
+        </th>
+        <th>
+            Location
+        </th>
+        <th>
+            Has room?
+        </th>
+        </thead>
+        <tbody>
+        <tr ng-repeat="l in lessons">
+            <td>
+                {[{ l.lessonType }]}
+            </td>
+            <td>
+                {[{ l.date | date:'yyyy-MM-dd HH:mm:ss' }]}
+            </td>
+            <td>
+                {[{ l.length }]}
+            </td>
+            <td>
+                {[{ l.location }]}
+            </td>
+            <td>
+                {[{ l.has_room }]}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="{% static "angular/angular.js" %}"></script>
+<script src="{% static "angular-resource/angular-resource.js" %}"></script>
+<script src="{% static "lessons.js" %}"></script>
+</body>
+</html>
