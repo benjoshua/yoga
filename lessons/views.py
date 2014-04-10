@@ -9,9 +9,11 @@ from lessons.models import Lesson, RegisteredStudent
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from rest_framework import generics
-from rest_framework.decorators import api_view
+from rest_framework import generics, status
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from lessons.serializers import LessonSerializer, LessonDetailSerializer, UserSerializer
 
 
@@ -56,24 +58,10 @@ def remove(request, lesson_id, student_id):
     return redirect("/lessons/")
 
 class LessonList(generics.ListAPIView):
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
     model = Lesson
     serializer_class = LessonSerializer
-
-class LessonDetail(generics.RetrieveAPIView):
-    model = Lesson
-    serializer_class = LessonDetailSerializer
-    lookup_field = 'id'
-
-class UserDetail(generics.RetrieveAPIView):
-    model = User
-    serializer_class = UserSerializer
-    lookup_field = 'username'
-
-@api_view(['GET'])
-def lesson_list(request, format=None):
-    lessons = Lesson.objects.all()
-    serializer = LessonSerializer(lessons, many=True)
-    return Response(serializer.data)
 
 @api_view(['GET'])
 def lesson_detail(request, pk, format=None):
@@ -86,13 +74,22 @@ def lesson_detail(request, pk, format=None):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
 def signup_api(request,format=None):
+
     username = request.DATA.get('username', '')
     lesson_id = request.DATA.get('lesson', '')
+
+    if request.user != username:
+        content = {'Not authorized to sign up': 'For a different user'}
+        return Response(content, status=status.HTTP_401_UNAUTHORIZED)
 
     student = get_object_or_404(User, username=username)
     lesson = get_object_or_404(Lesson, id=lesson_id)
     rs = RegisteredStudent(lesson=lesson,student=student)
     rs.save()
+
+    #TODO - handle case when class if full and notify students
 
     return Response({ 'success': True })
