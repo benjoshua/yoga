@@ -56,8 +56,12 @@ class Lesson(models.Model):
     def spots_left(self):
         return self.location.capacity - self.students.count() > 0
 
-    # def last_registered(self):
-    #     return self.students.latest('registeredstudent') if self.students else None
+    def last_registered(self):
+        registered = RegisteredStudent.objects.filter(lesson=self) if self.students else None
+        if registered:
+            return registered.latest('registrationTime').registrationTime
+        else:
+            return None
     
     def __unicode__(self):
         return self.lessonType.name

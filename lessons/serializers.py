@@ -14,11 +14,11 @@ class LessonSerializer(serializers.ModelSerializer):
     lessonType = serializers.SlugRelatedField(slug_field='name')
     location = serializers.SlugRelatedField(slug_field='name')
     has_room = serializers.Field(source='spots_left')
-    #last_registered = serializers.Field(source='last_registered')
+    last_registered = serializers.Field(source='last_registered')
 
     class Meta:
         model = Lesson
-        fields = ('id','lessonType','date','location','length', 'has_room')
+        fields = ('id','lessonType','date','location','length', 'has_room', 'students', 'last_registered')
 
 class LessonDetailSerializer(serializers.ModelSerializer):
 

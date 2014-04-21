@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^rest_api/$', views.LessonList.as_view()),
     url(r'^rest_api/(?P<pk>\d+)$', 'lessons.views.lesson_detail'),
     url(r'^rest_api/signup/$', 'lessons.views.signup_api'),
+    url(r'^rest_api/remove/$', 'lessons.views.remove_api'),
     url(r'^rest_api/login/$', 'lessons.views.login_api'),
     url(r'^rest_api/logout/$', 'lessons.views.logout_api'),
 

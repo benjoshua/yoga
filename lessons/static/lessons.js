@@ -5,6 +5,10 @@ lessonsApp.config(function ($interpolateProvider) {
     $interpolateProvider.endSymbol('}]}');
 });
 
+lessonsApp.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+}]);
+
 lessonsApp.controller('LessonsCtrl', ['$http', '$scope', function ($http, $scope) {
 
     $scope.lessons = [];
@@ -13,6 +17,28 @@ lessonsApp.controller('LessonsCtrl', ['$http', '$scope', function ($http, $scope
         .success(function (data) {
             $scope.lessons = data;
         });
+
+    $scope.signup = function (lesson_id) {
+        $http.post('/lessons/rest_api/signup/', {lesson: lesson_id})
+            .success(function () {
+                alert("signed up successfully");
+            })
+            .error(function (data) {
+                alert("error signing up: " + data);
+            });
+
+    }
+
+    $scope.remove = function (lesson_id) {
+        $http.post('/lessons/rest_api/remove/', {lesson: lesson_id})
+            .success(function () {
+                alert("removed successfully from class");
+            })
+            .error(function (data) {
+                alert("error removing: " + data);
+            });
+
+    }
 
 
 }]);

@@ -78,17 +78,28 @@ def lesson_detail(request, pk, format=None):
 @permission_classes((IsAuthenticated,))
 def signup_api(request,format=None):
 
-    username = request.DATA.get('username', '')
     lesson_id = request.DATA.get('lesson', '')
 
-    if request.user != username:
-        content = {'Not authorized to sign up': 'For a different user'}
-        return Response(content, status=status.HTTP_401_UNAUTHORIZED)
-
-    student = get_object_or_404(User, username=username)
+    student = get_object_or_404(User, username=request.user)
     lesson = get_object_or_404(Lesson, id=lesson_id)
     rs = RegisteredStudent(lesson=lesson,student=student)
     rs.save()
+
+    #TODO - handle case when class if full and notify students
+
+    return Response({ 'success': True })
+
+@api_view(['POST'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
+def remove_api(request,format=None):
+
+    lesson_id = request.DATA.get('lesson', '')
+
+    student = get_object_or_404(User, username=request.user)
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    rs = get_object_or_404(RegisteredStudent, lesson=lesson,student=student)
+    rs.delete()
 
     #TODO - handle case when class if full and notify students
 
