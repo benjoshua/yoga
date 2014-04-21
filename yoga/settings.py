@@ -83,7 +83,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en'#'he'
 
-TIME_ZONE = 'Asia/Jerusalem Asia/Tel_Aviv Israel'
+TIME_ZONE = 'Asia/Tel_Aviv'
 
 USE_I18N = True
 
@@ -102,6 +102,8 @@ TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 if os.environ.get('DATABASE_URL'): # Heroku
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
+
+    DEBUG = False
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
