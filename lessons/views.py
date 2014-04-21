@@ -6,7 +6,6 @@ from lessons.forms import UserCreateForm
 from django.views import generic
 import datetime
 from lessons.models import Lesson, RegisteredStudent
-from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from rest_framework import generics, status
@@ -14,7 +13,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-from lessons.serializers import LessonSerializer, LessonDetailSerializer, UserSerializer
+from lessons.serializers import LessonSerializer, LessonDetailSerializer, UserSerializer, RegisteredStudentSerializer
 
 
 
@@ -63,6 +62,12 @@ class LessonList(generics.ListAPIView):
     model = Lesson
     serializer_class = LessonSerializer
 
+class RegisteredStudentsList(generics.ListAPIView):
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
+    model = RegisteredStudent
+    serializer_class = RegisteredStudentSerializer
+
 @api_view(['GET'])
 def lesson_detail(request, pk, format=None):
     try:
@@ -102,6 +107,26 @@ def remove_api(request,format=None):
     rs.delete()
 
     #TODO - handle case when class if full and notify students
+
+    return Response({ 'success': True })
+
+@api_view(['POST'])
+@authentication_classes((SessionAuthentication, BasicAuthentication))
+@permission_classes((IsAuthenticated,))
+def attended_api(request, pk, format=None):
+
+    try:
+        lesson = Lesson.objects.get(id=pk)
+    except Lesson.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    students = request.DATA.get('students','')
+
+    for s in students:
+        student = get_object_or_404(User, id=s["id"])
+        rs = get_object_or_404(RegisteredStudent, lesson=lesson,student=student)
+        rs.attended = s["attended"]
+        rs.save()
 
     return Response({ 'success': True })
 

@@ -6,6 +6,7 @@
 </head>
 <body class="container" ng-app="LessonsApp">
 <div class="content" ng-controller="LessonsCtrl">
+    Hello, {{  user }}!!
     <table class="table table-bordered">
         <thead>
         <th>
@@ -53,6 +54,7 @@
             <td>
                 <a class="btn btn-primary" ng-show="l.students.indexOf({{ user.id }}) == -1" ng-click="signup(l.id)">Sign up</a>
                 <a class="btn btn-primary" ng-show="l.students.indexOf({{ user.id }}) != -1" ng-click="remove(l.id)">Remove</a>
+                <a href="{% url 'lesson_detail' 1 %}" class="btn btn-primary">Details</a>
             </td>
         </tr>
         </tbody>

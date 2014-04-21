@@ -1,6 +1,48 @@
-{% extends 'lessons/index.html' %}
+{% load staticfiles %}
 
-{% block details %}
-<td> Sign up </td>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "lessons/dist/css/bootstrap.css" %}">
+</head>
+<body class="container" ng-app="LessonDetail">
+<div class="content" ng-controller="LessonDetailCtrl">
+    <table class="table table-bordered">
+        <thead>
+        <th>
+            Student name
+        </th>
+        <th>
+            Registration Time
+        </th>
+        <th>
+            Attended
+        </th>
 
-{% endblock %}
+        </thead>
+        <tbody>
+        <tr ng-repeat="s in lesson.students">
+            <td>
+                {[{ s.name }]}
+            </td>
+            <td>
+                {[{ s.registrationTime | date:'yyyy-MM-dd HH:mm:ss' }]}
+            </td>
+            <td>
+{#                TODO - make checkbox#}
+                {[{ s.attended }]}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="{% static "angular/angular.js" %}"></script>
+<script src="{% static "angular-resource/angular-resource.js" %}"></script>
+<script src="{% static "lesson_detail.js" %}"></script>
+<script>
+    var app = angular.module('LessonDetail');
+    app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+}]);
+</script>
+</body>
+</html>
