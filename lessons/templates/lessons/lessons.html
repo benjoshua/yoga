@@ -24,6 +24,9 @@
             Has room?
         </th>
         <th>
+            Last registered
+        </th>
+        <th>
 
         </th>
         </thead>
@@ -43,6 +46,9 @@
             </td>
             <td>
                 {[{ l.has_room }]}
+            </td>
+            <td>
+                {[{ l.last_registered | date: 'dd/MM/yyyy @ HH:mm' }]}
             </td>
             <td>
                 <a class="btn btn-primary" ng-show="l.students.indexOf({{ user.id }}) == -1" ng-click="signup(l.id)">Sign up</a>
