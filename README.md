@@ -1,2 +1,2 @@
-yoga
+yogaApp
 ====
