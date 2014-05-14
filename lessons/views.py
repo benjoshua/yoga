@@ -60,3 +60,9 @@ def attend(request):
 
     selected_lesson.save()
     return redirect('index')
+
+def lessonsPanel(request):
+        return render(request, "lessons/panel.html", {
+
+    })
+

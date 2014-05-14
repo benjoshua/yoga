@@ -3,6 +3,7 @@ from django.contrib import admin
 from lessons import views
 from django.core.urlresolvers import reverse_lazy
 
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^logout/$',
         'django.contrib.auth.views.logout',
         {'next_page': reverse_lazy('index')}, name="logout"),
+
 )
 

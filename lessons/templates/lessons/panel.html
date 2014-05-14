@@ -1,0 +1,46 @@
+{% extends 'lessons/base.html' %} {% block content %}
+<div class="container" style="margin-top: 40px">
+    <div class="row">
+        <h3>Lesson Management Panel</h3>
+
+        <table style="border: 1px solid black;border-collapse:collapse;  border-spacing: 20px; border-collapse: separate;">
+            <tr>
+                <th style="text-align:center;">Sunday</th>
+                <th style="text-align:center;">Monday</th>
+                <th style="text-align:center;">Tuesday</th>
+                <th style="text-align:center;">Wednesday</th>
+                <th style="text-align:center;">Thursday</th>
+                <th style="text-align:center;">Friday</th>
+            </tr>
+
+            {% for i in "xxxxx" %}
+                <tr>
+                {% for i in "xxxxxx" %}
+                    <td style="text-align:center;">
+                        <input name="fromHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px 1x; width: 22px; text-align:center;">:
+                        <input name="fromHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px -3px; width: 22px; text-align:center;"> -
+                        <input name="toHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px 1px; width: 22px; text-align:center;">:
+                        <input name="toHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px -3px; width: 22px; text-align:center;">
+                        <br>
+                         <select name="Type"  style="margin: 2px 1px; width: 150px; ">
+                            <option value="Vinyasa">Vinyasa</option>
+                            <option value="Ashtanga">Ashtanga</option>
+                            <option value="Kundalini">Kundalini</option>
+                            <option value="Hata">Hata</option>
+                        </select><br>
+                        <select name="Teacher" style="margin: 2px 0px; width: 150px; text-align:center;">
+                            <option value="Omer">Omer</option>
+                            <option value="Keren">Keren</option>
+                            <option value="Yosi">Yosi</option>
+                            <option value="Joe">Joe</option>
+                        </select>
+                    </td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

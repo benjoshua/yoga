@@ -71,7 +71,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en'#'he'
 
-TIME_ZONE = 'Asia/Jerusalem Asia/Tel_Aviv Israel'
+# TIME_ZONE = 'Asia/Jerusalem Asia/Tel_Aviv Israel'
 
 USE_I18N = True
 
