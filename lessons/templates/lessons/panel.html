@@ -12,32 +12,35 @@
                 <th style="text-align:center;">Thursday</th>
                 <th style="text-align:center;">Friday</th>
             </tr>
-
-            {% for i in "xxxxx" %}
+            {% for line in data%}
                 <tr>
-                {% for i in "xxxxxx" %}
+                {% for day in line%}
                     <td style="text-align:center;">
-                        <input name="fromHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px 1x; width: 22px; text-align:center;">:
-                        <input name="fromHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px -3px; width: 22px; text-align:center;"> -
-                        <input name="toHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px 1px; width: 22px; text-align:center;">:
-                        <input name="toHour" type="type" value="" type="" id="" placeholder="00" maxlength="2" style="margin: 2px -3px; width: 22px; text-align:center;">
-                        <br>
-                         <select name="Type"  style="margin: 2px 1px; width: 150px; ">
-                            <option value="Vinyasa">Vinyasa</option>
-                            <option value="Ashtanga">Ashtanga</option>
-                            <option value="Kundalini">Kundalini</option>
-                            <option value="Hata">Hata</option>
-                        </select><br>
-                        <select name="Teacher" style="margin: 2px 0px; width: 150px; text-align:center;">
-                            <option value="Omer">Omer</option>
-                            <option value="Keren">Keren</option>
-                            <option value="Yosi">Yosi</option>
-                            <option value="Joe">Joe</option>
-                        </select>
+                        {%if day.fromHour%}
+                            <input name="fromHour" type="type" value="{{day.fromHour}}" type="" id="" placeholder="00" maxlength="2" style="margin: 2px 1x; width: 22px; text-align:center;">:
+                            <input name="fromMin" type="type" value="{{day.fromMin}}" type="" id="" placeholder="00" maxlength="2" style="margin: 2px -3px; width: 22px; text-align:center;"> -
+                            <input name="toHour" type="type" value="{{day.toHour}}" type="" id="" placeholder="00" maxlength="2" style="margin: 2px 1px; width: 22px; text-align:center;">:
+                            <input name="toMin" type="type" value="{{day.toHour}}" type="" id="" placeholder="00" maxlength="2" style="margin: 2px -3px; width: 22px; text-align:center;">
+                            <br>
+                             <select name="Type"  style="margin: 2px 1px; width: 150px;" value="{{day.type}}">
+                                <option value="Vinyasa" {%ifequal day.type 'Vinyasa' %} selected="selected" {%endifequal%}>Vinyasa</option>
+                                <option value="Ashtanga" {%ifequal day.type 'Ashtanga' %} selected="selected" {%endifequal%}>Ashtanga</option>
+                                <option value="Kundalini" {%ifequal day.type 'Kundalini' %} selected="selected" {%endifequal%}>Kundalini</option>
+                                <option value="Hata" {%ifequal day.type 'Hata' %} selected="selected" {%endifequal%}>Hata</option>
+                            </select><br>
+                            <select name="Teacher" style="margin: 2px 0px; width: 150px; text-align:center;">
+                                <option value="Omer" {%ifequal day.teacher 'Omer' %} selected="selected" {%endifequal%}>Omer</option>
+                                <option value="Keren" {%ifequal day.teacher 'Keren' %} selected="selected" {%endifequal%}>Keren</option>
+                                <option value="Yosi" {%ifequal day.teacher 'Yosi' %} selected="selected" {%endifequal%}>Yosi</option>
+                                <option value="Joe" {%ifequal day.teacher 'Joe' %} selected="selected" {%endifequal%}>Joe</option>
+                            </select>
+                        {%else%}
+                            <br><br>
+                        {%endif%}
                     </td>
-                {% endfor %}
+                {%endfor%}
                 </tr>
-            {% endfor %}
+            {%endfor%}
         </table>
 
     </div>
